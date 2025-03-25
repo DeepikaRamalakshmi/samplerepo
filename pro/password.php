@@ -23,30 +23,22 @@ if(!isset($_SESSION["aid"]))
         <div id ="center">
 
         <?php
-         if (isset($_POST["submit"])) {
-   
-        $sql = "SELECT * FROM admin WHERE apass = :opass AND aid = :aid";
-        $res = $con->prepare($sql);
-        $res->execute([
-            ':opass' => $_POST["opass"],
-            ':aid' => $_SESSION["aid"]
-        ]);
+           if(isset($_POST["submit"]))
+           {
+               $sql="select * from admin where apass='{$_POST["opass"]}' and aid='{$_SESSION["aid"]}'";
+               $res=$con->query($sql);
 
-        if ($res->fetch(PDO::FETCH_ASSOC)) {
-            $sql = "UPDATE admin SET apass = :npass WHERE aid = :aid";
-            $res = $con->prepare($sql);
-            $res->execute([
-                ':npass' => $_POST["npass"],
-                ':aid' => $_SESSION["aid"]
-            ]);
+               if($res->num_rows>0){
+                $sql="update admin set apass='{$_POST["npass"]}' where aid=".$_SESSION["aid"];
+                $con->query($sql);
+                echo "<p class='success'>password changed success</p>";
+               }
+               else{
+                echo "<p class='error'>invalid password</p>";
 
-            echo "<p class='success'>Password changed successfully</p>";
-        } else {
-            echo "<p class='error'>Invalid password</p>";
-        }
-    } 
-?>
-
+               }
+            }
+            ?>
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">     
                   <label>oldpassword</label>
                   <input type="password" name="opass" required>

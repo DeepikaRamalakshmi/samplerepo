@@ -1,10 +1,7 @@
 <?php
-try {
-    $con = new PDO("mysql:host=localhost;dbname=pro", "root", "");
-    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-?>
-
+   $con=new mysqli('localhost','root','','pro');
+   if(!$con){
+      die(mysqli_error($con));
+  }
   
+  ?>

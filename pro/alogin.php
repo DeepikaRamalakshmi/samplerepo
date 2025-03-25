@@ -14,20 +14,19 @@ include "db.php";
      <h1>E-Library Management System</h1>
 	<div id="wrapper">
 	<h3 id="heading">Admin Login here</h3>
-
+	
 	<div id="center">
 	<?php
          if(isset($_POST["submit"])){
 			$sql="SELECT * FROM admin where aname='{$_POST["name"]}' and apass='{$_POST["password"]}'";
-			$res=$con->prepare($sql);
-			$res->execute(); 
-	        if ($res->rowCount() > 0) {
-				$row = $res->fetch(PDO::FETCH_ASSOC); 
-				$_SESSION["aid"] = $row["aid"];     
-				$_SESSION["aname"] = $row["aname"];  
-				header("location:ahome.php");                               
+			$res=$con->query($sql);
+	        if($res->num_rows>0)
+			{
+				$row=$res->fetch_assoc();
+				$_SESSION["aid"]=$row["aid"];
+				$_SESSION["aname"]=$row["aname"];
+                header("location:ahome.php");
 			}
-			
 			else{
 				echo "<p class='error'>invalid user details</p>";
 			}

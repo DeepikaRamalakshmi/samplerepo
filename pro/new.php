@@ -18,21 +18,16 @@ include "db.php";
         <div id ="center">
 
         <?php
-       if (isset($_POST["submit"])) {
-         
-        $sql = "INSERT INTO student (name, password, mail, dep) 
-                VALUES (:name, :password, :mail, :dep)";
-        $stmt = $con->prepare($sql);
-        $stmt->execute([
-            ':name' => $_POST["name"],
-            ':password' => $_POST["pass"],
-            ':mail' => $_POST["mail"],
-            ':dep' => $_POST["dep"]
-        ]);
+           if(isset($_POST["submit"]))
+           {
+            
+                $sql="insert into student(name,password,mail,dep) values('{$_POST["name"]}','{$_POST["pass"]}','{$_POST["mail"]}','{$_POST["dep"]}')";
+                $con->query($sql);
+                echo "<p class='success'>user registration success</p>";
 
-        echo "<p class='success'>User registration successful</p>";
-    } 
-       ?>
+            }
+            ?>
+
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">     
                   <label>Name</label>
                   <input type="text" name="name" required>

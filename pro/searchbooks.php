@@ -32,36 +32,34 @@ if(!isset($_SESSION["id"]))
           if(isset($_POST["submit"]))
           {
            $sql="SELECT * FROM book where btitle like '%{$_POST["name"]}%' or keywords like '%{$_POST["name"]}%'";
-    
-           $res=$con->prepare($sql);
-           $res->execute();
-           if ($res->rowCount() > 0) {
-            echo "<table>
-                    <tr>
-                        <th>SNO</th>
-                        <th>BOOK NAME</th>
-                        <th>KEYWORD</th>
-                        <th>VIEW</th>
-                        <th>COMMENT</th>
-                    </tr>";
-            
-            $i = 0;
-            while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-                $i++;
-                echo "<tr>";
-                echo "<td>{$i}</td>";
-                echo "<td>{$row["btitle"]}</td>";
-                echo "<td>{$row["keywords"]}</td>";
-                echo "<td><a href='{$row["file"]}' target='_blank'>view</a></td>";
-                echo "<td><a href='comment.php?id={$row["bid"]}'>Go</a></td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        } else {
+           $res=$con->query($sql);
+           if($res->num_rows>0){
+                echo "<table>
+                <tr>
+                    <th>SNO</th>
+                    <th>BOOK NAME</th>
+                    <th>KEYWORD</th>
+                    <th>VIEW</th>
+                    <th>COMMENT</th>
+                </tr>";
+                $i=0;
+                while($row=$res->fetch_assoc())
+                {
+                    $i++;
+                    echo "<tr>";
+                    echo "<td>{$i}</td>";
+                    echo "<td>{$row["btitle"]}</td>";
+                    echo "<td>{$row["keywords"]}</td>";
+                    echo "<td><a href='{$row["file"]}' target='_blank'>view</a></td>";
+                    echo "<td><a href='comment.php?id={$row["bid"]}'>Go</a></td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+           }else{
             echo "<p class='error'>No books records found</p>";
+           }
         }
-    } 
-?>
+        ?>
 </div>
 
 	</div>

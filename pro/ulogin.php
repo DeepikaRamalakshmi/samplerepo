@@ -3,6 +3,10 @@ session_start();
 include "db.php";
 ?>
 
+
+
+
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -20,17 +24,18 @@ include "db.php";
 	<?php
          if(isset($_POST["submit"])){
 			$sql="SELECT * FROM student where name='{$_POST["name"]}' and password='{$_POST["pass"]}'";
-			$res=$con->prepare($sql);
-			$res->execute();
-	        if ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-                $_SESSION["id"] = $row["id"];
-                $_SESSION["name"] = $row["name"];
-                header("location: uhome.php");
-                exit;
-            } else {
-                echo "<p class='error'>Invalid user details</p>";
-            }
-        } 
+			$res=$con->query($sql);
+	        if($res->num_rows>0)
+			{
+				$row=$res->fetch_assoc();
+				$_SESSION["id"]=$row["id"];
+				$_SESSION["name"]=$row["name"];
+                header("location:uhome.php");
+			}
+			else{
+				echo "<p class='error'>invalid user details</p>";
+			}
+         }
     ?>
 
 	<form action="ulogin.php" method="post">

@@ -21,35 +21,33 @@ if(!isset($_SESSION["aid"]))
 	<div id="wrapper">
 	    <h3 id="heading">view request details</h3>
         <?php
-           $sql = "SELECT student.name, request.mes, request.logs FROM student INNER JOIN request ON student.id = request.id";
-           $res = $con->prepare($sql); 
-           $res->execute(); 
+           $sql="Select student.name,request.mes,request.logs from student inner join request on student.id=request.id";
+           $res=$con->query($sql);
+           if($res->num_rows>0){
+                echo "<table>
+                <tr>
+                    <th>SNO</th>
+                    <th>NAME</th>
+                    <th>MESSAGE</th>
+                    <th>LOGS</th>
+                </tr>";
+                $i=0;
+                while($row=$res->fetch_assoc())
+                {
+                    $i++;
+                    echo "<tr>";
+                    echo "<td>{$i}</td>";
+                    echo "<td>{$row["name"]}</td>";
+                    echo "<td>{$row["mes"]}</td>";
+                    echo "<td>{$row["logs"]}</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+           }else{
+            echo "<p class='error'>No request records found</p>";
+           }
 
-        if ($res->rowCount() > 0) {
-            echo "<table>
-            <tr>
-                <th>SNO</th>
-                <th>NAME</th>
-                <th>MESSAGE</th>
-                <th>LOGS</th>
-            </tr>";
-
-    $i = 0;
-    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-        $i++;
-        echo "<tr>";
-        echo "<td>{$i}</td>";
-        echo "<td>{$row['name']}</td>";
-        echo "<td>{$row['mes']}</td>";
-        echo "<td>{$row['logs']}</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} else {
-    echo "<p class='error'>No request records found</p>";
-}
-?>
-
+        ?>
 	     
 	</div>
 	</div>

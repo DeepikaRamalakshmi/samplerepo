@@ -23,29 +23,22 @@ if(!isset($_SESSION["id"]))
         <div id ="center">
 
         <?php
-        if (isset($_POST["submit"])) {
-        $sql = "SELECT * FROM student WHERE password = :opass AND id = :id";
-        $res = $con->prepare($sql);
-        $res->execute([
-            ':opass' => $_POST["opass"],
-            ':id' => $_SESSION["id"]
-        ]);
+           if(isset($_POST["submit"]))
+           {
+               $sql="select * from student where password='{$_POST["opass"]}' and id='{$_SESSION["id"]}'";
+               $res=$con->query($sql);
 
-        if ($res->rowCount() > 0) {
-            $sql = "UPDATE student SET password = :npass WHERE id = :id";
-            $res = $con->prepare($sql);
-            $res->execute([
-                ':npass' => $_POST["npass"],
-                ':id' => $_SESSION["id"]
-            ]);
+               if($res->num_rows>0){
+                $sql="update student set password='{$_POST["npass"]}' where id=".$_SESSION["id"];
+                $con->query($sql);
+                echo "<p class='success'>password changed success</p>";
+               }
+               else{
+                echo "<p class='error'>invalid password</p>";
 
-            echo "<p class='success'>Password changed successfully</p>";
-        } else {
-            echo "<p class='error'>Invalid password</p>";
-        }
-    } 
-?>
-
+               }
+            }
+            ?>
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">     
                   <label>oldpassword</label>
                   <input type="password" name="opass" required>

@@ -26,8 +26,7 @@ if(!isset($_SESSION["id"]))
            if(isset($_POST["submit"]))
            {
                $sql="insert into request (id,mes,logs) values('{$_SESSION["id"]})','{$_POST["msg"]}',now())";
-               $res=$con->prepare($sql);
-               $res->execute();
+               $res=$con->query($sql);
                 echo "<p class='success'>request send to admin</p>";
            }
             ?>
